@@ -12,7 +12,7 @@ public class FileInput {
 
     public FileInput(){}
 
-    
+
     public List<Record> parseFile(String absolutePath){
         List<Record> returnList = new ArrayList<>();
         File textFile = new File(absolutePath);
