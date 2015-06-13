@@ -1,63 +1,100 @@
 package hr.bpervan.mt.io;
 
+import java.io.Serializable;
+
 /**
  * Created by Branimir on 5.6.2015..
  */
-public class Record {
-    private String timestamp;
-    private double rss;
-    private int beaconId;
+public class Record implements Serializable{
+    //18:27:07.525 # 74278bda-b644-4520-8f0c-720eaf059935-baba-bebe $ -94 # 7.9;-5.5;1.9 # -40.9;1;-15.6
 
-    public Record(String timestamp, double rss, int beaconId){
+    private Timestamp timestamp;
+    private String beaconId;
+    private int rss;
+    private Coordinate3D accelerometer;
+    private Coordinate3D magnetometer;
+
+    public Record(Timestamp timestamp, String beaconId, int rss, Coordinate3D accelerometer, Coordinate3D magnetometer) {
         this.timestamp = timestamp;
-        this.rss = rss;
         this.beaconId = beaconId;
+        this.rss = rss;
+        this.accelerometer = accelerometer;
+        this.magnetometer = magnetometer;
     }
 
-    public String getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
-    public double getRss() {
-        return rss;
-    }
-
-    public void setRss(double rss) {
-        this.rss = rss;
-    }
-
-    public int getBeaconId() {
+    public String getBeaconId() {
         return beaconId;
     }
 
-    public void setBeaconId(int beaconId) {
+    public void setBeaconId(String beaconId) {
         this.beaconId = beaconId;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    public int getRss() {
+        return rss;
+    }
+
+    public void setRss(int rss) {
+        this.rss = rss;
+    }
+
+    public Coordinate3D getAccelerometer() {
+        return accelerometer;
+    }
+
+    public void setAccelerometer(Coordinate3D accelerometer) {
+        this.accelerometer = accelerometer;
+    }
+
+    public Coordinate3D getMagnetometer() {
+        return magnetometer;
+    }
+
+    public void setMagnetometer(Coordinate3D magnetometer) {
+        this.magnetometer = magnetometer;
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Timestamp: ");
-        stringBuilder.append(timestamp);
-        stringBuilder.append("\n");
+        return "Record{" +
+                "timestamp=" + timestamp +
+                ", beaconId='" + beaconId + '\'' +
+                ", rss=" + rss +
+                ", accelerometer=" + accelerometer +
+                ", magnetometer=" + magnetometer +
+                '}';
+    }
 
-        stringBuilder.append("Beacon ID: ");
-        stringBuilder.append(beaconId);
-        stringBuilder.append("\n");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Record)) return false;
 
-        stringBuilder.append("RSS: ");
-        stringBuilder.append(rss);
-        stringBuilder.append("\n");
+        Record record = (Record) o;
 
-        return stringBuilder.toString();
+        if (getRss() != record.getRss()) return false;
+        if (!getTimestamp().equals(record.getTimestamp())) return false;
+        if (!getBeaconId().equals(record.getBeaconId())) return false;
+        if (!getAccelerometer().equals(record.getAccelerometer())) return false;
+        return getMagnetometer().equals(record.getMagnetometer());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTimestamp().hashCode();
+        result = 31 * result + getBeaconId().hashCode();
+        result = 31 * result + getRss();
+        result = 31 * result + getAccelerometer().hashCode();
+        result = 31 * result + getMagnetometer().hashCode();
+        return result;
     }
 }

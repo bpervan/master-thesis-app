@@ -15,16 +15,9 @@ import static org.junit.Assert.*;
  */
 public class VectorImplementationTest {
 
-    private Vector<Double> doubleVector;
-    private List<Double> coeffs1;
-    private List<Double> coeffs2;
-
     @Before
     public void setUp() throws Exception {
-        this.coeffs1 = Arrays.asList(new Double[]{1.0, 2.0, 3.0});
-        this.coeffs2 = Arrays.asList(new Double[]{4.0, 5.0, 6.0});
 
-        this.doubleVector = new VectorImplementation()
     }
 
     @After
