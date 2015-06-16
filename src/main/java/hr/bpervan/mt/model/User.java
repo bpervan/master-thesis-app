@@ -9,7 +9,9 @@ import java.util.Map;
  * Created by Branimir on 2.6.2015..
  */
 public class User {
-    private Map<Integer, Function> time;
+    private Map<Integer, Function> timeMap;
+
+
     private int userId;
     private String firstName;
     private String lastName;
@@ -19,8 +21,8 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
 
-        this.time = new HashMap<>();
+        this.timeMap = new HashMap<>();
     }
 
-    
+
 }
