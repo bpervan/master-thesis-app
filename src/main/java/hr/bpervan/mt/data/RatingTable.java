@@ -10,8 +10,11 @@ import java.io.InputStreamReader;
 /**
  * Created by Branimir on 15.6.2015..
  */
+@Deprecated
 public class RatingTable {
     private Table<Integer, Integer, Double> table;
+
+
 
     public RatingTable(){
         table = HashBasedTable.create();
@@ -23,6 +26,23 @@ public class RatingTable {
 
     public void setTable(Table<Integer, Integer, Double> table) {
         this.table = table;
+    }
+
+    public double[][] toArray(){
+        double[][] array = new double[table.rowKeySet().size()][table.columnKeySet().size()];
+        int i = 0;
+        int j = 0;
+        //System.out.println(table.rowKeySet().size());
+        for(Integer col : table.columnKeySet()){
+            for(Integer row : table.rowKeySet()){
+                array[i][j] =  table.get(row, col);
+                i++;
+                //System.out.println(i + " " + j);
+            }
+            i = 0;
+            j++;
+        }
+        return array;
     }
 
     public static RatingTable fromCsv(String relativePath){

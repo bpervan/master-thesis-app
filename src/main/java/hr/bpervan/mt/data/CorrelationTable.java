@@ -52,18 +52,12 @@ public class CorrelationTable {
                 double numeratorSum = .0;
                 for(Map.Entry<Integer, Double> e : firstColumn.entrySet()){
                     double xTemp = .0;
-                    //if(e.getValue() != -1.0){
-                        xTemp += (e.getValue() - xAverage);
-                    //} else {
-                        //xTemp += (-xAverage);
-                    //}
-
                     double yTemp = .0;
-                    //if(secondColumn.get(e.getKey()) != -1.0){
+
+                    if((e.getValue() != .0) && (secondColumn.get(e.getKey()) != .0)){
+                        xTemp += (e.getValue() - xAverage);
                         yTemp += (secondColumn.get(e.getKey()) - yAverage);
-                    //} else {
-                        //yTemp += (-yAverage);
-                    //}
+                    }
                     numeratorSum += (xTemp * yTemp);
                 }
 
@@ -91,7 +85,7 @@ public class CorrelationTable {
 
                 double correl  = numeratorSum / Math.sqrt(xSqTemp * ySqTemp);
 
-                System.out.println("Row1: " + rowKey1 + " Row2: " + rowKey2 + " Correl: " + correl);
+                //System.out.println("Row1: " + rowKey1 + " Row2: " + rowKey2 + " Correl: " + correl);
                 table.put(rowKey1, rowKey2, correl);
             }
         }

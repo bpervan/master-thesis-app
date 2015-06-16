@@ -1,7 +1,9 @@
 package hr.bpervan.mt.main;
 
 import hr.bpervan.mt.data.CorrelationTable;
+import hr.bpervan.mt.data.Correlations;
 import hr.bpervan.mt.data.RatingTable;
+import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.io.FileInput;
 import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.utils.StringUtils;
@@ -26,14 +28,11 @@ public class Main {
             System.out.println(r);
         }*/
 
+        Ratings ratings = Ratings.fromCsv("ratings.csv");
+        Correlations correlations = new Correlations(ratings);
+        double[][] t = correlations.getTable();
+        System.out.println(t[20][21]);
 
-        RatingTable ratingTable = RatingTable.fromCsv("ratings.csv");
-
-
-        CorrelationTable correlationTable = new CorrelationTable(ratingTable);
-
-
-        System.out.println(ratingTable.getTable().get(11,5136));
         System.out.println("Over and out!");
     }
 }
