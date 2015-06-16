@@ -32,7 +32,6 @@ public class Main {
 
         CorrelationTable correlationTable = new CorrelationTable(ratingTable);
 
-        PearsonsCorrelation correlation = new PearsonsCorrelation();
 
         System.out.println(ratingTable.getTable().get(11,5136));
         System.out.println("Over and out!");

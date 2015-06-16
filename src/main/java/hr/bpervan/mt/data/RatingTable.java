@@ -82,15 +82,6 @@ public class RatingTable {
         return ratingTable;
     }
 
-    public double[][] toArrayTable{
-        double[][] retTable = 
-        for(Integer column : table.columnKeySet()){
-            for(Integer row : table.rowKeySet()) {
-
-            }
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
