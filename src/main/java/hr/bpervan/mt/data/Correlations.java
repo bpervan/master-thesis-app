@@ -33,7 +33,6 @@ public class Correlations {
 
 
     public List<UserCorrelationLink> getNeighbourhood(int user, int n){
-        int[] idArray = new int[n];
         List<UserCorrelationLink> list = new ArrayList<>();
         for(Map.Entry<Integer, Integer> e : this.rowIndices.entrySet()){
             list.add(new UserCorrelationLink(
@@ -41,8 +40,9 @@ public class Correlations {
                     this.getCorrelation(user, e.getKey())
             ));
         }
-        Collections.sort(list);
-        return list;
+        Collections.sort(list, Collections.reverseOrder());
+
+        return list.subList(1, n + 1);
     }
 
     public double getCorrelation(Integer user1, Integer user2){

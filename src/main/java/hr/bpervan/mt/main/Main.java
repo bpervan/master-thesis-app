@@ -3,6 +3,12 @@ package hr.bpervan.mt.main;
 import hr.bpervan.mt.data.*;
 import hr.bpervan.mt.io.FileInput;
 import hr.bpervan.mt.io.Record;
+import hr.bpervan.mt.model.Item;
+import hr.bpervan.mt.model.ItemBuilder;
+import hr.bpervan.mt.model.User;
+import hr.bpervan.mt.model.UserBuilder;
+import hr.bpervan.mt.recommender.RecommendationAlgorithm;
+import hr.bpervan.mt.recommender.UserUser;
 import hr.bpervan.mt.utils.StringUtils;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -29,11 +35,22 @@ public class Main {
         Ratings ratings = Ratings.fromCsv("ratingstranspose.csv");
 
         Correlations correlations = new Correlations(ratings);
-        //List<UserCorrelationLink> list = correlations.getNeighbourhood(3867, 6);
 
-        System.out.println(ratings.getAverageGivenToItem(36658));
-        System.out.println(ratings.getAverageGivenByUser(3712));
+        RecommendationAlgorithm algo = new UserUser(ratings, correlations);
 
+        User testUser = UserBuilder.getInstance()
+                .setUserId(3867)
+                .setFirstName("Testko")
+                .setLastName("Testic")
+                .build();
+
+        Item testItem = ItemBuilder.getInstance()
+                .setItemId(12)
+                .setItemName("Star Wars")
+                .build();
+
+        List<ItemPredictionLink> resultList = algo.getTopNForUser(testUser, 5);
+        resultList.forEach(action -> System.out.println(action));
 
         System.out.println("Over and out!");
     }

@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Branimir on 16.6.2015..
@@ -14,16 +16,24 @@ import java.util.Map;
 public class Ratings {
     private double[][] ratingTable;
 
-    public double[] averageGivenByUser;
-    public double[] averageGivenToItem;
+    private double[] averageGivenByUser;
+    private double[] averageGivenToItem;
 
-    /** (Virtualni kljuè, Fizièki kljuè)*/
+    /** These Maps translate user or item ids to physical keys in double[][] */
     private Map<Integer, Integer> rowIndices;
     private Map<Integer, Integer> columnIndices;
 
     private Ratings(){
         this.rowIndices = new HashMap<>();
         this.columnIndices = new HashMap<>();
+    }
+
+    public Set<Integer> getItemSet(){
+        return columnIndices.keySet();
+    }
+
+    public Set<Integer> getUserSet(){
+        return rowIndices.keySet();
     }
 
     public double getAverageGivenByUser(int userId) {
