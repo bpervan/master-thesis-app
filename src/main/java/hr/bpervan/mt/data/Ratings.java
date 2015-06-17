@@ -76,9 +76,9 @@ public class Ratings {
                     positiveCount++;
                     sum += ratingTable[j][i];
                 }
-                System.out.print(ratingTable[j][i] + " ");
+                //System.out.print(ratingTable[j][i] + " ");
             }
-            System.out.println();
+            //System.out.println();
             this.averageGivenToItem[i] = (sum / positiveCount);
         }
     }

@@ -2,6 +2,7 @@ package hr.bpervan.mt.model;
 
 import hr.bpervan.mt.functions.Function;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,14 +13,19 @@ public class UserBuilder {
         this.userId = -1;
         this.firstName = null;
         this.lastName = null;
-        this.timeMap = null;
+        this.timeMap = new HashMap<>();
     }
 
     private int userId;
     private String firstName;
     private String lastName;
+
+    /** itemId -> function*/
     private Map<Integer, Function> timeMap;
 
+    /**
+     * @return New UserBuilder instance
+     */
     public static UserBuilder getInstance(){
         return new UserBuilder();
     }
@@ -41,6 +47,11 @@ public class UserBuilder {
 
     public UserBuilder setTimeMap(Map<Integer, Function> timeMap){
         this.timeMap = timeMap;
+        return this;
+    }
+
+    public UserBuilder addEntryToTimeMap(int itemId, Function function){
+        this.timeMap.put(itemId, function);
         return this;
     }
 
