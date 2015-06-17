@@ -1,12 +1,8 @@
 package hr.bpervan.mt.data;
 
-import hr.bpervan.mt.utils.StringUtils;
+import hr.bpervan.mt.model.User;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Branimir on 16.6.2015..
@@ -17,6 +13,7 @@ public class Correlations {
 
     private Map<Integer, Integer> rowIndices;
     private Map<Integer, Integer> columnIndices;
+    private double[][] in;
 
     private Correlations(){
         this.rowIndices = new HashMap<>();
@@ -34,17 +31,34 @@ public class Correlations {
         return correlTable;
     }
 
-    private double[][] cleanColumns(double[][] in){
-        double[][] cleaned = new double[2][in.length];
 
-        return cleaned;
+    public List<UserCorrelationLink> getNeighbourhood(int user, int n){
+        int[] idArray = new int[n];
+        List<UserCorrelationLink> list = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> e : this.rowIndices.entrySet()){
+            list.add(new UserCorrelationLink(
+                    e.getKey(),
+                    this.getCorrelation(user, e.getKey())
+            ));
+        }
+        Collections.sort(list);
+        return list;
+    }
+
+    public double getCorrelation(Integer user1, Integer user2){
+        return this.correlTable[rowIndices.get(user1)][columnIndices.get(user2)];
     }
 
     private void calculatePearson(Ratings ratings){
-        for(int i = 0; i < ratings.getNumCols(); ++i){
-            for(int j = 0; j < ratings.getNumCols(); ++j){
-                double[] firstCol = ratings.getTable()[i];
-                double[] secondCol = ratings.getTable()[j];
+        for(int i = 0; i < ratings.getNumRows(); ++i){
+            for(int j = 0; j < ratings.getNumRows(); ++j){
+
+                double[] firstRow = ratings.getTable()[i];
+                double[] secondRow = ratings.getTable()[j];
+
+                //System.out.println(ratings.getRowKeyByValue(i) + " " + ratings.getColumnKeyByValue(j));
+                this.rowIndices.put(ratings.getRowKeyByValue(i), i);
+                this.columnIndices.put(ratings.getRowKeyByValue(j), j);
 
                 int n = 0;
                 double sumX = .0;
@@ -52,15 +66,15 @@ public class Correlations {
                 double sumXY = .0;
                 double sumSqX = .0;
                 double sumSqY = .0;
-                for(int k = 0; k < firstCol.length; ++k){
-                    if((Double.compare(firstCol[k], -100.0) != 0) && (Double.compare(secondCol[k], -100.0) != 0)){
+                for(int k = 0; k < firstRow.length; ++k){
+                    if((Double.compare(firstRow[k], -100.0) != 0) && (Double.compare(secondRow[k], -100.0) != 0)){
                         n++;
-                        sumXY += (firstCol[k] * secondCol[k]);
-                        sumX += firstCol[k];
-                        sumY += secondCol[k];
+                        sumXY += (firstRow[k] * secondRow[k]);
+                        sumX += firstRow[k];
+                        sumY += secondRow[k];
 
-                        sumSqX += (firstCol[k] * firstCol[k]);
-                        sumSqY += (secondCol[k] * secondCol[k]);
+                        sumSqX += (firstRow[k] * firstRow[k]);
+                        sumSqY += (secondRow[k] * secondRow[k]);
                     }
                 }
                 double numerator = (n * sumXY) - (sumX * sumY);
@@ -68,7 +82,8 @@ public class Correlations {
 
                 double correl = numerator / denominator;
                 this.correlTable[i][j] = correl;
-                System.out.println("i: " + i + " j: " + j + " correl: " + correl);
+                //System.out.println("i: " + this.columnIndices.get(i) + " j: " + this.rowIndices.get(j) + " correl: " + correl);
+                //System.out.println("i: " + i + " j: " + j + " correl: " + correl);
             }
         }
     }

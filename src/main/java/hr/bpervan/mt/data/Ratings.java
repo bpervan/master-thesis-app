@@ -14,6 +14,9 @@ import java.util.Map;
 public class Ratings {
     private double[][] ratingTable;
 
+    public double[] averageGivenByUser;
+    public double[] averageGivenToItem;
+
     /** (Virtualni kljuè, Fizièki kljuè)*/
     private Map<Integer, Integer> rowIndices;
     private Map<Integer, Integer> columnIndices;
@@ -22,6 +25,72 @@ public class Ratings {
         this.rowIndices = new HashMap<>();
         this.columnIndices = new HashMap<>();
     }
+
+    public double getAverageGivenByUser(int userId) {
+        return averageGivenByUser[rowIndices.get(userId)];
+    }
+
+    public double getAverageGivenToItem(int itemId) {
+        return averageGivenToItem[columnIndices.get(itemId)];
+    }
+
+    private void calculateAverageGivenByUser(){
+        double positiveCount;
+        double sum;
+        this.averageGivenByUser = new double[ratingTable.length];
+        for (int i = 0; i < ratingTable.length; i++) {
+            double[] row = ratingTable[i];
+            positiveCount = 0;
+            sum = 0;
+
+            for(double d : row){
+                if(Double.compare(d, -100.0) != 0){
+                    positiveCount++;
+                    sum += d;
+                }
+            }
+            //System.out.println(sum + " " + positiveCount);
+            this.averageGivenByUser[i] = (sum / positiveCount);
+        }
+    }
+
+    private void calculateAverageGivenToItem(){
+        double positiveCount;
+        double sum;
+        this.averageGivenToItem = new double[ratingTable[0].length];
+        for (int i = 0; i < ratingTable[0].length; i++) {
+            positiveCount = 0;
+            sum = 0;
+            for (int j = 0; j < ratingTable.length; j++) {
+                if(Double.compare(ratingTable[j][i], -100.0) != 0){
+                    positiveCount++;
+                    sum += ratingTable[j][i];
+                }
+                System.out.print(ratingTable[j][i] + " ");
+            }
+            System.out.println();
+            this.averageGivenToItem[i] = (sum / positiveCount);
+        }
+    }
+
+    public Integer getRowKeyByValue(Integer in){
+        for(Map.Entry<Integer, Integer> e : this.rowIndices.entrySet()){
+            if(e.getValue().equals(in)){
+                return e.getKey();
+            }
+        }
+        return null;
+    }
+
+    public Integer getColumnKeyByValue(Integer in){
+        for(Map.Entry<Integer, Integer> e : this.columnIndices.entrySet()){
+            if(e.getValue().equals(in)){
+                return e.getKey();
+            }
+        }
+        return null;
+    }
+
 
     public double[][] getTable(){
         return this.ratingTable;
@@ -53,11 +122,12 @@ public class Ratings {
             line = bufferedReader.readLine();
             String[] columnIndices = line.split(";");
             for(int i = 1; i < columnIndices.length; ++i){
-                ratings.columnIndices.put(Integer.parseInt(columnIndices[i]), i);
+                String[] parts = columnIndices[i].split(":");
+                ratings.columnIndices.put(Integer.parseInt(parts[0]), i - 1);
             }
 
             int rowNum = StringUtils.countLines(classLoader.getResource(relativePath).getFile()) - 1;
-            ratings.ratingTable = new double[rowNum][columnIndices.length];
+            ratings.ratingTable = new double[rowNum][columnIndices.length - 1];
             int rowKeyCounter = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 if(line.charAt(line.length() - 1) == ';'){
@@ -72,9 +142,9 @@ public class Ratings {
 
                 for(int i = 1; i < parts.length; ++i){
                     if(parts[i].isEmpty()){
-                        ratings.ratingTable[rowKeyCounter][i] = -100.0;
+                        ratings.ratingTable[rowKeyCounter][i - 1] = -100.0;
                     } else {
-                        ratings.ratingTable[rowKeyCounter][i] = Double.parseDouble(parts[i]);
+                        ratings.ratingTable[rowKeyCounter][i - 1] = Double.parseDouble(parts[i]);
                     }
                 }
 
@@ -85,6 +155,9 @@ public class Ratings {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        ratings.calculateAverageGivenByUser();
+        ratings.calculateAverageGivenToItem();
 
         return ratings;
     }

@@ -1,15 +1,13 @@
 package hr.bpervan.mt.main;
 
-import hr.bpervan.mt.data.CorrelationTable;
-import hr.bpervan.mt.data.Correlations;
-import hr.bpervan.mt.data.RatingTable;
-import hr.bpervan.mt.data.Ratings;
+import hr.bpervan.mt.data.*;
 import hr.bpervan.mt.io.FileInput;
 import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.utils.StringUtils;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,10 +26,14 @@ public class Main {
             System.out.println(r);
         }*/
 
-        Ratings ratings = Ratings.fromCsv("ratings.csv");
+        Ratings ratings = Ratings.fromCsv("ratingstranspose.csv");
+
         Correlations correlations = new Correlations(ratings);
-        double[][] t = correlations.getTable();
-        System.out.println(t[20][21]);
+        //List<UserCorrelationLink> list = correlations.getNeighbourhood(3867, 6);
+
+        System.out.println(ratings.getAverageGivenToItem(36658));
+        System.out.println(ratings.getAverageGivenByUser(3712));
+
 
         System.out.println("Over and out!");
     }
