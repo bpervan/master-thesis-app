@@ -1,6 +1,7 @@
 package hr.bpervan.mt.recommender;
 
 import hr.bpervan.mt.data.ItemPredictionLink;
+import hr.bpervan.mt.data.LocationPredictionLink;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.space.Dijkstra;
@@ -37,8 +38,8 @@ public class SpaceFilter implements RecommendationAlgorithm {
     /** Ovaj glupi graf nije prilagoðen da radi na ovom principu jer svaki èvor nosi
      * udaljenost samo od jednog èvora
      * */
-    public List<ItemPredictionLink> getTopNForUser(User user, int n, int location){
-        List<ItemPredictionLink> helperList = new ArrayList<>();
+    public List<LocationPredictionLink> getTopNForUser(User user, int n, int location){
+        List<LocationPredictionLink> helperList = new ArrayList<>();
 
         Dijkstra dijkstra = new Dijkstra();
         dijkstra.calculateDistances(layout, location + "");
@@ -47,7 +48,7 @@ public class SpaceFilter implements RecommendationAlgorithm {
         Collections.sort(nodeList);
         double maxDistance = nodeList.get(nodeList.size() - 1).getDistance();
         for(Node node : nodeList){
-            helperList.add(new ItemPredictionLink(
+            helperList.add(new LocationPredictionLink(
                     Integer.parseInt(node.getNodeName()),
                     1 - ((double)node.getDistance() / maxDistance)
             ));

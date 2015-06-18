@@ -15,7 +15,7 @@ public class Dijkstra implements SPAlgorithm{
 	public List<Node> getShortestPath(Graph g, String startNode, String endNode) {
 		calculateDistances(g, startNode);
 		
-		List<Node> path = new ArrayList<Node>();
+		List<Node> path = new ArrayList<>();
 		for(Node n = g.getNodeByName(endNode); n != null; n = n.getPrevious()){
 			path.add(n);
 		}
@@ -48,13 +48,13 @@ public class Dijkstra implements SPAlgorithm{
 		}
 		
 		/** Testing */
-		for(Node node : g.getGraphNodes()){
+		/*for(Node node : g.getGraphNodes()){
 			System.out.println(node.getNodeName());
 			for(Map.Entry<Node, Integer> entry : node.getNeighbours().entrySet()){
 				System.out.println("Vertex: "  + entry.getKey().getNodeName() + "->" + entry.getValue());
 			}
 			System.out.println("Min distance from A: " + node.getDistance());
 			System.out.println("--------------------------");
-		}
+		}*/
 	}
 }
