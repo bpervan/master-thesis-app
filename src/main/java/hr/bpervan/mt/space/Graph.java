@@ -61,7 +61,7 @@ public class Graph {
 
 				for (int j = 0; j < parts.length; j++) {
 					if(Integer.compare(Integer.parseInt(parts[j]), 1) == 0){
-						System.out.println(i + " - " + j);
+						//System.out.println(i + " - " + j);
 						g.getNodeByName(i+"").addNeighbour(g.getNodeByName(j+""), 1);
 					}
 				}

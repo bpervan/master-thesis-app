@@ -9,10 +9,8 @@ import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.ItemBuilder;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.model.UserBuilder;
-import hr.bpervan.mt.recommender.RecommendationAlgorithm;
+import hr.bpervan.mt.recommender.*;
 import hr.bpervan.mt.recommender.SpaceFilter;
-import hr.bpervan.mt.recommender.TimeFilter;
-import hr.bpervan.mt.recommender.UserUser;
 import hr.bpervan.mt.space.*;
 import hr.bpervan.mt.utils.StringUtils;
 import org.apache.commons.math3.linear.BlockRealMatrix;
@@ -30,7 +28,9 @@ public class Main {
 
     public static Logger logger = Logger.getLogger(Main.class);
 
-    public static void main(String[] args){
+    public static final int LAYOUT_SIZE = 9;
+
+    public static void main(String[] args) throws FileNotFoundException {
         /*FileInput fileInput = FileInput.createInstance();
         List<Record> list = fileInput.parseFile("raw_data/dataset1/LogFile_06-06-15_17_38.txt");
 
@@ -56,17 +56,39 @@ public class Main {
                 .setItemName("Star Wars")
                 .build();
 
-        List<ItemPredictionLink> resultList = algo.getTopNForUser(testUser, 5);
-        //resultList.forEach(itl -> System.out.println(itl));
+        TheAlgorithm algorithm = new TheAlgorithm(
+                new SpaceFilter(Graph.fromCsv("layout.csv")),
+                new TimeFilter(ratings),
+                new UserUser(ratings, correlations)
+        );
 
-        RecommendationAlgorithm algo1 = new TimeFilter(ratings);
-        List<ItemPredictionLink> timeResult = algo1.getTopNForUser(testUser, 5);
-        //timeResult.forEach(it -> System.out.println(it));
+        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 20, 0);
+        result.forEach(ipl -> logger.info(ipl));
 
-        SpaceFilter algo2 = new SpaceFilter(Graph.fromCsv("layout.csv"));
-        List<LocationPredictionLink> spaceResult = algo2.getTopNForUser(null, 5, 0);
-        spaceResult.stream().forEach(i -> System.out.println(i));
-
+        logger.info("");
         System.out.println("Over and out!");
+    }
+
+
+
+    public static void Load() throws FileNotFoundException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("locationsunfiltered.csv");
+
+        Random random = new Random();
+        int i = 0;
+        PrintWriter printWriter = new PrintWriter(new File("locationsfiltered.csv"));
+        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))){
+            String line = null;
+            while((line = bufferedReader.readLine()) != null){
+                String[] parts = line.split(":");
+                printWriter.println(parts[0] + ";" + "Item" + parts[0] + ";" + random.nextInt(LAYOUT_SIZE));
+                i++;
+            }
+            printWriter.close();
+            bufferedReader.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

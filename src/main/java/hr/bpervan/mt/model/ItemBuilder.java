@@ -6,10 +6,12 @@ package hr.bpervan.mt.model;
 public class ItemBuilder {
     private int itemId;
     private String itemName;
+    private int location;
 
     private ItemBuilder(){
         this.itemId = -1;
         this.itemName = null;
+        this.location = 0;
     }
 
     public static ItemBuilder getInstance(){
@@ -26,7 +28,12 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setLocation(int location){
+        this.location = location;
+        return this;
+    }
+
     public Item build(){
-        return new Item(itemId, itemName);
+        return new Item(itemId, itemName, location);
     }
 }
