@@ -10,6 +10,7 @@ import hr.bpervan.mt.model.ItemBuilder;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.model.UserBuilder;
 import hr.bpervan.mt.recommender.RecommendationAlgorithm;
+import hr.bpervan.mt.recommender.SpaceFilter;
 import hr.bpervan.mt.recommender.TimeFilter;
 import hr.bpervan.mt.recommender.UserUser;
 import hr.bpervan.mt.space.*;
@@ -17,7 +18,7 @@ import hr.bpervan.mt.utils.StringUtils;
 import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.*;
@@ -26,6 +27,9 @@ import java.util.*;
  * Created by Branimir on 2.6.2015..
  */
 public class Main {
+
+    public static Logger logger = Logger.getLogger(Main.class);
+
     public static void main(String[] args){
         /*FileInput fileInput = FileInput.createInstance();
         List<Record> list = fileInput.parseFile("raw_data/dataset1/LogFile_06-06-15_17_38.txt");
@@ -59,10 +63,9 @@ public class Main {
         List<ItemPredictionLink> timeResult = algo1.getTopNForUser(testUser, 5);
         //timeResult.forEach(it -> System.out.println(it));
 
-        Graph g = Graph.fromCsv("layout.csv");
-        SPAlgorithm spAlgorithm = new Dijkstra();
-        List<Node> path = spAlgorithm.getShortestPath(g, "0", "2");
-        path.forEach(i -> System.out.println(i));
+        SpaceFilter algo2 = new SpaceFilter(Graph.fromCsv("layout.csv"));
+        List<ItemPredictionLink> spaceResult = algo2.getTopNForUser(null, 5, 0);
+        spaceResult.stream().forEach(i -> System.out.println(i));
 
         System.out.println("Over and out!");
     }
