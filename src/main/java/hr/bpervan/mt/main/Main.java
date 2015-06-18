@@ -64,7 +64,7 @@ public class Main {
         //timeResult.forEach(it -> System.out.println(it));
 
         SpaceFilter algo2 = new SpaceFilter(Graph.fromCsv("layout.csv"));
-        List<ItemPredictionLink> spaceResult = algo2.getTopNForUser(null, 5, 0);
+        List<LocationPredictionLink> spaceResult = algo2.getTopNForUser(null, 5, 0);
         spaceResult.stream().forEach(i -> System.out.println(i));
 
         System.out.println("Over and out!");
