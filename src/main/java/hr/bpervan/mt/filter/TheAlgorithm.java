@@ -1,8 +1,7 @@
-package hr.bpervan.mt.recommender;
+package hr.bpervan.mt.filter;
 
 import hr.bpervan.mt.data.Correlations;
 import hr.bpervan.mt.data.ItemPredictionLink;
-import hr.bpervan.mt.data.LocationPredictionLink;
 import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
@@ -23,9 +22,9 @@ public class TheAlgorithm implements RecommendationAlgorithm {
 
     private SpaceFilter spaceFilter;
     private TimeFilter timeFilter;
-    private UserUser userUserFilter;
+    private UserUserFilter userUserFilter;
 
-    public TheAlgorithm(SpaceFilter spaceFilter, TimeFilter timeFilter, UserUser userUserFilter){
+    public TheAlgorithm(SpaceFilter spaceFilter, TimeFilter timeFilter, UserUserFilter userUserFilter){
         this.spaceFilter = spaceFilter;
         this.timeFilter = timeFilter;
         this.userUserFilter = userUserFilter;
@@ -48,12 +47,12 @@ public class TheAlgorithm implements RecommendationAlgorithm {
         List<ItemPredictionLink> timeResult = timeFilter.getTopNForUser(user, n);
         List<ItemPredictionLink> userResult = userUserFilter.getTopNForUser(user, n);
 
-        System.out.println("SpacePrediction");
+        /*System.out.println("SpacePrediction");
         spaceResult.forEach(i -> System.out.println(i));
         System.out.println("TimePrediction");
         timeResult.forEach(i -> System.out.println(i));
         System.out.println("UserUserPrediction");
-        userResult.forEach(i -> System.out.println(i));
+        userResult.forEach(i -> System.out.println(i));*/
 
 
 

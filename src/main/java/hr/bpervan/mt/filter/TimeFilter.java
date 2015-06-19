@@ -1,11 +1,10 @@
-package hr.bpervan.mt.recommender;
+package hr.bpervan.mt.filter;
 
 import hr.bpervan.mt.data.ItemPredictionLink;
 import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
 
-import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -71,6 +70,10 @@ public class TimeFilter implements RecommendationAlgorithm {
 
         Collections.sort(helperList, Collections.reverseOrder());
 
-        return helperList.subList(0, n);
+        if(n > helperList.size()){
+            return helperList;
+        } else {
+            return helperList.subList(0, n);
+        }
     }
 }

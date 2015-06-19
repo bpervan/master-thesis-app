@@ -1,17 +1,13 @@
-package hr.bpervan.mt.recommender;
+package hr.bpervan.mt.filter;
 
 import hr.bpervan.mt.data.ItemPredictionLink;
-import hr.bpervan.mt.data.LocationPredictionLink;
-import hr.bpervan.mt.main.Main;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.space.Dijkstra;
 import hr.bpervan.mt.space.Graph;
 import hr.bpervan.mt.space.Node;
-import hr.bpervan.mt.space.SPAlgorithm;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

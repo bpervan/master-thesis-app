@@ -1,4 +1,4 @@
-package hr.bpervan.mt.recommender;
+package hr.bpervan.mt.filter;
 
 import hr.bpervan.mt.data.ItemPredictionLink;
 import hr.bpervan.mt.model.Item;

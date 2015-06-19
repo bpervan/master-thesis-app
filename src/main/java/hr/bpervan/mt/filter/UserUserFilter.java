@@ -1,4 +1,4 @@
-package hr.bpervan.mt.recommender;
+package hr.bpervan.mt.filter;
 
 
 import hr.bpervan.mt.data.Correlations;
@@ -9,14 +9,13 @@ import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Branimir on 17.6.2015..
  */
-public class UserUser implements RecommendationAlgorithm{
+public class UserUserFilter implements RecommendationAlgorithm{
 
 
     private static final int NEIGHBOURHOOD_SIZE = 5;
@@ -24,7 +23,7 @@ public class UserUser implements RecommendationAlgorithm{
     private Ratings ratings;
     private Correlations correlations;
 
-    public UserUser(Ratings ratings, Correlations correlations) {
+    public UserUserFilter(Ratings ratings, Correlations correlations) {
         this.ratings = ratings;
         this.correlations = correlations;
     }
@@ -96,7 +95,11 @@ public class UserUser implements RecommendationAlgorithm{
 
         Collections.sort(helperList, Collections.reverseOrder());
 
-        return helperList.subList(0, n);
+        if(n > helperList.size()){
+            return helperList;
+        } else {
+            return helperList.subList(0, n);
+        }
     }
 
 }

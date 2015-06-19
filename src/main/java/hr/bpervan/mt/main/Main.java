@@ -1,21 +1,14 @@
 package hr.bpervan.mt.main;
 
 import hr.bpervan.mt.data.*;
-import hr.bpervan.mt.functions.Function;
 import hr.bpervan.mt.functions.Gaussian;
-import hr.bpervan.mt.io.FileInput;
-import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.ItemBuilder;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.model.UserBuilder;
-import hr.bpervan.mt.recommender.*;
-import hr.bpervan.mt.recommender.SpaceFilter;
+import hr.bpervan.mt.filter.*;
+import hr.bpervan.mt.filter.SpaceFilter;
 import hr.bpervan.mt.space.*;
-import hr.bpervan.mt.utils.StringUtils;
-import org.apache.commons.math3.linear.BlockRealMatrix;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -40,7 +33,7 @@ public class Main {
 
         Ratings ratings = Ratings.fromCsv("ratingstranspose.csv");
         Correlations correlations = new Correlations(ratings);
-        RecommendationAlgorithm algo = new UserUser(ratings, correlations);
+        RecommendationAlgorithm algo = new UserUserFilter(ratings, correlations);
 
         UserBuilder testUserBuilder = UserBuilder.getInstance()
                 .setUserId(89)
@@ -59,11 +52,13 @@ public class Main {
         TheAlgorithm algorithm = new TheAlgorithm(
                 new SpaceFilter(Graph.fromCsv("layout.csv")),
                 new TimeFilter(ratings),
-                new UserUser(ratings, correlations)
+                new UserUserFilter(ratings, correlations)
         );
 
-        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 20, 0);
-        result.forEach(ipl -> logger.info(ipl));
+        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
+
+        result.forEach(i -> System.out.println(i));
+
 
         logger.info("");
         System.out.println("Over and out!");
