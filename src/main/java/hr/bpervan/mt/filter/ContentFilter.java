@@ -22,6 +22,8 @@ public class ContentFilter implements RecommendationAlgorithm {
     public ContentFilter(Ratings ratings, List<Item> items) {
         this.ratings = ratings;
         this.items = items;
+        df = new HashMap<>();
+        idf = new HashMap<>();
         this.setup();
     }
 

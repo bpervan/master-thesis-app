@@ -51,14 +51,19 @@ public class TheAlgorithm implements RecommendationAlgorithm {
         List<ItemPredictionLink> spaceResult = spaceFilter.getTopNForUser(user, n, location);
         List<ItemPredictionLink> timeResult = timeFilter.getTopNForUser(user, n);
         List<ItemPredictionLink> userResult = userUserFilter.getTopNForUser(user, n);
+        List<ItemPredictionLink> contentResult = contentFilter.getTopNForUser(user, n);
 
-        /*System.out.println("SpacePrediction");
+        System.out.println("SpacePrediction");
         spaceResult.forEach(i -> System.out.println(i));
+        System.out.println();
         System.out.println("TimePrediction");
         timeResult.forEach(i -> System.out.println(i));
+        System.out.println();
         System.out.println("UserUserPrediction");
-        userResult.forEach(i -> System.out.println(i));*/
-
+        userResult.forEach(i -> System.out.println(i));
+        System.out.println();
+        System.out.println("ContentPrediction");
+        contentResult.forEach(i -> System.out.println(i));
 
 
         spaceResult
