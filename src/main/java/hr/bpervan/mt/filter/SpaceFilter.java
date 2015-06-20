@@ -17,9 +17,10 @@ import java.util.List;
 public class SpaceFilter implements RecommendationAlgorithm {
 
     private Graph layout;
-
-    public SpaceFilter(Graph layout){
+    private List<Item> itemList;
+    public SpaceFilter(Graph layout, List<Item> itemList){
         this.layout = layout;
+        this.itemList = itemList;
     }
 
     @Override
@@ -38,8 +39,6 @@ public class SpaceFilter implements RecommendationAlgorithm {
     public List<ItemPredictionLink> getTopNForUser(User user, int n, int location){
         List<ItemPredictionLink> helperList = new ArrayList<>();
 
-        List<Item> items = Item.fromCsv("locations.csv");
-
         Dijkstra dijkstra = new Dijkstra();
         dijkstra.calculateDistances(layout, location + "");
         List<Node> nodeList = layout.getGraphNodes();
@@ -48,7 +47,7 @@ public class SpaceFilter implements RecommendationAlgorithm {
         double maxDistance = nodeList.get(nodeList.size() - 1).getDistance();
 
         for(Node node : nodeList){
-            items
+            itemList
                     .stream()
                     .filter(p -> p.getLocation() == Integer.parseInt(node.getNodeName()))
                     .forEach(item -> helperList.add(new ItemPredictionLink(

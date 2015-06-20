@@ -44,22 +44,16 @@ public class Main {
         }
         User testUser = testUserBuilder.build();
 
-        Item testItem = ItemBuilder.getInstance()
-                .setItemId(12)
-                .setItemName("Star Wars")
-                .build();
+        List<Item> itemList = Item.fromCsv("itemswithcharacteristics.csv");
 
         TheAlgorithm algorithm = new TheAlgorithm(
-                new SpaceFilter(Graph.fromCsv("layout.csv")),
+                new SpaceFilter(Graph.fromCsv("layout.csv"), itemList),
                 new TimeFilter(ratings),
                 new UserUserFilter(ratings, correlations)
         );
 
         List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
-
-        result.forEach(i -> System.out.println(i));
-
-
+        
         logger.info("");
         System.out.println("Over and out!");
     }

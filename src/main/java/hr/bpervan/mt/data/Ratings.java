@@ -132,7 +132,7 @@ public class Ratings {
             line = bufferedReader.readLine();
             String[] columnIndices = line.split(";");
             for(int i = 1; i < columnIndices.length; ++i){
-                String[] parts = columnIndices[i].split(":");
+                String[] parts = columnIndices[i].split("#");
                 ratings.columnIndices.put(Integer.parseInt(parts[0]), i - 1);
             }
 
