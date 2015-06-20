@@ -49,11 +49,12 @@ public class Main {
         TheAlgorithm algorithm = new TheAlgorithm(
                 new SpaceFilter(Graph.fromCsv("layout.csv"), itemList),
                 new TimeFilter(ratings),
-                new UserUserFilter(ratings, correlations)
+                new UserUserFilter(ratings, correlations),
+                new ContentFilter(ratings, itemList)
         );
 
         List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
-        
+
         logger.info("");
         System.out.println("Over and out!");
     }

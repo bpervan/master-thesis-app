@@ -7,10 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Branimir on 2.6.2015..
@@ -21,6 +18,8 @@ public class Item {
     private int location;
 
     public Map<String, Double> characteristicsMap;
+
+    public static Set<String> cNames = new HashSet<>();
 
     public Item(int itemId, String itemName, int location, Map<String, Double> inMap) {
         this.itemId = itemId;
@@ -81,6 +80,7 @@ public class Item {
             String line = bufferedReader.readLine();
             String[] partsPreliminary = line.split("#");
             String[] characteristicsNames = partsPreliminary[1].split(";");
+            Item.cNames.addAll(Arrays.asList(characteristicsNames));
 
             while((line = bufferedReader.readLine()) != null){
                 String[] parts = line.split("#");

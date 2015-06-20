@@ -23,11 +23,16 @@ public class TheAlgorithm implements RecommendationAlgorithm {
     private SpaceFilter spaceFilter;
     private TimeFilter timeFilter;
     private UserUserFilter userUserFilter;
+    private ContentFilter contentFilter;
 
-    public TheAlgorithm(SpaceFilter spaceFilter, TimeFilter timeFilter, UserUserFilter userUserFilter){
+    public TheAlgorithm(SpaceFilter spaceFilter,
+                        TimeFilter timeFilter,
+                        UserUserFilter userUserFilter,
+                        ContentFilter contentFilter){
         this.spaceFilter = spaceFilter;
         this.timeFilter = timeFilter;
         this.userUserFilter = userUserFilter;
+        this.contentFilter = contentFilter;
     }
 
     @Override
