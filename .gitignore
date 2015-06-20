@@ -3,6 +3,7 @@
 *.iml
 
 *.log
+*.bak
 
 ## Directory-based project format:
 .idea/
