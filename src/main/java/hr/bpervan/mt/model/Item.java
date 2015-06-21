@@ -1,7 +1,5 @@
 package hr.bpervan.mt.model;
 
-import hr.bpervan.mt.data.Characteristics;
-import hr.bpervan.mt.utils.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

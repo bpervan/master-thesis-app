@@ -1,6 +1,5 @@
 package hr.bpervan.mt.filter;
 
-import hr.bpervan.mt.data.Characteristics;
 import hr.bpervan.mt.data.ItemPredictionLink;
 import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.model.Item;

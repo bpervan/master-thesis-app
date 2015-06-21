@@ -110,6 +110,14 @@ public class Ratings {
         return this.ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)];
     }
 
+    public void setValue(Integer rowKey, Integer columnKey, double data){
+        ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] = data;
+    }
+
+    public void reinforce(Integer rowKey, Integer columnKey, double data){
+        ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] += data;
+    }
+
     public int getNumRows(){
         return ratingTable.length;
     }
