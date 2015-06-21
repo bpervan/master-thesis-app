@@ -115,7 +115,10 @@ public class Ratings {
     }
 
     public void reinforce(Integer rowKey, Integer columnKey, double data){
-        ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] += data;
+        /** Provjeriti ide li preko maksimuma */
+        if(ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] + data < 5){
+            ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] += data;
+        }
     }
 
     public int getNumRows(){

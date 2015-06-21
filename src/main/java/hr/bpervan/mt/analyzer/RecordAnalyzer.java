@@ -101,14 +101,13 @@ public class RecordAnalyzer {
 
         if(time >= MIN_FOR_STOPBY){
             /** Zaustavljanje reinforcement*/
-            
+            ratings.reinforce(3712, itemId, 0.5);
         } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
             /** Zastajkivanje reinforcement */
-
-
+            ratings.reinforce(3712, itemId, 0.3);
         } else {
             /** Prolazak */
-
+            
         }
 
         System.out.println(time);
