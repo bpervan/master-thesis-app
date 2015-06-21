@@ -2,6 +2,8 @@ package hr.bpervan.mt.main;
 
 import hr.bpervan.mt.data.*;
 import hr.bpervan.mt.functions.Gaussian;
+import hr.bpervan.mt.io.FileInput;
+import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.ItemBuilder;
 import hr.bpervan.mt.model.User;
@@ -22,16 +24,19 @@ public class Main {
     public static Logger logger = Logger.getLogger(Main.class);
 
     public static final int LAYOUT_SIZE = 9;
+    public static final String LAYOUT_FILE_NAME = "layout.csv";
+    public static final String ITEMS_FILE_NAME = "itemswithcharacteristics.csv";
+    public static final String RATINGS_FILE_NAME = "ratingstranspose.csv";
 
     public static void main(String[] args) throws FileNotFoundException {
-        /*FileInput fileInput = FileInput.createInstance();
-        List<Record> list = fileInput.parseFile("raw_data/dataset1/LogFile_06-06-15_17_38.txt");
+        FileInput fileInput = FileInput.createInstance();
+        List<Record> list = fileInput.parseFile("raw_data/dataset2/LogFile_06-06-15_17_59.txt");
 
         for(Record r : list){
-            System.out.println(r);
-        }*/
+            System.out.println(r.getRss() + " " + r.getAccelerometer() + " " + r.getMagnetometer());
+        }
 
-        Ratings ratings = Ratings.fromCsv("ratingstranspose.csv");
+        /*Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
         Correlations correlations = new Correlations(ratings);
         RecommendationAlgorithm algo = new UserUserFilter(ratings, correlations);
 
@@ -44,7 +49,7 @@ public class Main {
         }
         User testUser = testUserBuilder.build();
 
-        List<Item> itemList = Item.fromCsv("itemswithcharacteristics.csv");
+        List<Item> itemList = Item.fromCsv(ITEMS_FILE_NAME);
 
         TheAlgorithm algorithm = new TheAlgorithm(
                 new SpaceFilter(Graph.fromCsv("layout.csv"), itemList),
@@ -53,32 +58,9 @@ public class Main {
                 new ContentFilter(ratings, itemList)
         );
 
-        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
+        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);*/
 
         logger.info("");
         System.out.println("Over and out!");
-    }
-
-
-
-    public static void Load() throws FileNotFoundException {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("locationsunfiltered.csv");
-
-        Random random = new Random();
-        int i = 0;
-        PrintWriter printWriter = new PrintWriter(new File("locationsfiltered.csv"));
-        try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))){
-            String line = null;
-            while((line = bufferedReader.readLine()) != null){
-                String[] parts = line.split(":");
-                printWriter.println(parts[0] + ";" + "Item" + parts[0] + ";" + random.nextInt(LAYOUT_SIZE));
-                i++;
-            }
-            printWriter.close();
-            bufferedReader.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }
