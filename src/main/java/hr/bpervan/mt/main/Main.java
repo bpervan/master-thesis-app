@@ -1,5 +1,6 @@
 package hr.bpervan.mt.main;
 
+import hr.bpervan.mt.analyzer.RecordAnalyzer;
 import hr.bpervan.mt.data.*;
 import hr.bpervan.mt.functions.Gaussian;
 import hr.bpervan.mt.io.FileInput;
@@ -30,11 +31,19 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
         FileInput fileInput = FileInput.createInstance();
-        List<Record> list = fileInput.parseFile("raw_data/dataset2/LogFile_06-06-15_17_59.txt");
+        List<Record> list = fileInput.parseFile("raw_data/dataset1/LogFile_06-06-15_17_38.txt");
 
-        for(Record r : list){
-            System.out.println(r.getRss() + " " + r.getAccelerometer() + " " + r.getMagnetometer());
-        }
+        list
+                .forEach(r ->
+                        System.out.println(
+                                r.getTimestamp().getSeconds() + " "
+                                        + r.getRss() + " "
+                                + r.getAccelerometer() + " "
+                                + r.getMagnetometer()));
+
+        RecordAnalyzer recordAnalyzer = new RecordAnalyzer();
+        recordAnalyzer.analyze(list);
+
 
         /*Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
         Correlations correlations = new Correlations(ratings);
