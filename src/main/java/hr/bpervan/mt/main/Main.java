@@ -28,28 +28,36 @@ public class Main {
     public static final String LAYOUT_FILE_NAME = "layout.csv";
     public static final String ITEMS_FILE_NAME = "itemswithcharacteristics.csv";
     public static final String RATINGS_FILE_NAME = "ratingstranspose.csv";
+    public static final String BEACONS_FILE_NAME = "itemsbeacons.csv";
 
     public static void main(String[] args) throws FileNotFoundException {
         FileInput fileInput = FileInput.createInstance();
-        List<Record> list = fileInput.parseFile("raw_data/dataset1/LogFile_06-06-15_17_38.txt");
+        List<Record> list = fileInput.parseFile("raw_data/dataset7/LogFile_06-06-15_18_26.txt");
+
+        Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
+        Correlations correlations = new Correlations(ratings);
+        RecommendationAlgorithm algo = new UserUserFilter(ratings, correlations);
+
+        List<ItemBeaconLink> itemsBeacons = ItemBeaconLink.fromCsv(BEACONS_FILE_NAME);
 
         list
                 .forEach(r ->
                         System.out.println(
                                 r.getTimestamp().getSeconds() + " "
                                         + r.getRss() + " "
-                                + r.getAccelerometer() + " "
-                                + r.getMagnetometer()));
+                                        + r.getAccelerometer() + " "
+                                        + r.getMagnetometer()));
 
-        RecordAnalyzer recordAnalyzer = new RecordAnalyzer();
+
+
+        RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
         recordAnalyzer.analyze(list);
 
 
-        /*Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
-        Correlations correlations = new Correlations(ratings);
-        RecommendationAlgorithm algo = new UserUserFilter(ratings, correlations);
 
-        UserBuilder testUserBuilder = UserBuilder.getInstance()
+
+
+        /*UserBuilder testUserBuilder = UserBuilder.getInstance()
                 .setUserId(89)
                 .setFirstName("Testko")
                 .setLastName("Testic");

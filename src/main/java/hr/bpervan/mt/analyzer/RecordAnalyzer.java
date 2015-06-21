@@ -1,6 +1,9 @@
 package hr.bpervan.mt.analyzer;
 
+import hr.bpervan.mt.data.ItemBeaconLink;
+import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.io.Record;
+import hr.bpervan.mt.main.Main;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -16,12 +19,18 @@ public class RecordAnalyzer {
 
     public static final int SCANNING_FRAME = 5;
 
-    public static final int SIGNAL_THRESHOLD_INITIAL = 10;
+    public static final int SIGNAL_THRESHOLD_INITIAL = 15;
     public static final int SIGNAL_THRESHOLD_WORKING = 5;
 
-    public static final int TIME_THRESHOLD = 3;
+    public static final int MIN_FOR_REINFORCEMENT = 3;
+    public static final int MIN_FOR_STOPBY = 5;
 
-    public RecordAnalyzer(){
+    private List<ItemBeaconLink> itemBeaconLinks;
+    private Ratings ratings;
+
+    public RecordAnalyzer(Ratings ratings, List<ItemBeaconLink> itemBeaconLinks){
+        this.ratings = ratings;
+        this.itemBeaconLinks = itemBeaconLinks;
     }
 
     /**
@@ -42,6 +51,8 @@ public class RecordAnalyzer {
         final int maxRss = records.stream().max(Comparator.comparing(record -> record.getRss())).get().getRss();
 
         Record maxRssRecord = records.stream().filter(p -> p.getRss() == maxRss).findFirst().get();
+
+        System.out.println(maxRssRecord.getRss());
 
         int lowerBound = records.indexOf(maxRssRecord);
         int highBound = lowerBound;
@@ -81,8 +92,24 @@ public class RecordAnalyzer {
             distinctTimes.add(records.get(k).getTimestamp().getSeconds());
         }
         int time = distinctTimes.size();
+        int itemId = itemBeaconLinks
+                .stream()
+                .filter(p -> p.getBeaconId().equals(maxRssRecord.getBeaconId()))
+                .findFirst()
+                .get()
+                .getItemId();
+
+        if(time >= MIN_FOR_STOPBY){
+            /** Zaustavljanje reinforcement*/
+            
+        } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
+            /** Zastajkivanje reinforcement */
 
 
+        } else {
+            /** Prolazak */
+
+        }
 
         System.out.println(time);
     }
