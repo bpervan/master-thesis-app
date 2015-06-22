@@ -12,6 +12,7 @@ import hr.bpervan.mt.model.UserBuilder;
 import hr.bpervan.mt.filter.*;
 import hr.bpervan.mt.filter.SpaceFilter;
 import hr.bpervan.mt.space.*;
+import hr.bpervan.mt.utils.TestFilesHelper;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -32,8 +33,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
         FileInput fileInput = FileInput.createInstance();
-        List<Record> list = fileInput.parseFile("raw_data/dataset7/LogFile_06-06-15_18_26.txt");
-
+        //List<Record> list = fileInput.parseFile("raw_data/dataset7/LogFile_06-06-15_18_26.txt");
 
         Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
         Correlations correlations = new Correlations(ratings);
@@ -71,7 +71,10 @@ public class Main {
         //List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
 
         RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
-        recordAnalyzer.analyze(list, testUser);
+        for(String fileName : TestFilesHelper.filesList()){
+            recordAnalyzer.analyze(fileInput.parseFile(fileName), testUser);
+        }
+
 
         logger.info("");
         System.out.println("Over and out!");
