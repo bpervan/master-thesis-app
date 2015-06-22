@@ -53,8 +53,6 @@ public class RecordAnalyzer {
 
         Record maxRssRecord = records.stream().filter(p -> p.getRss() == maxRss).findFirst().get();
 
-        System.out.println(maxRssRecord.getRss());
-
         int lowerBound = records.indexOf(maxRssRecord);
         int highBound = lowerBound;
 
@@ -110,7 +108,6 @@ public class RecordAnalyzer {
             /** Prolazak */
 
         }
-
-        System.out.println(time);
+        System.out.println(maxRssRecord.getRss() + " " + time);
     }
 }

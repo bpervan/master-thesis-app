@@ -119,6 +119,7 @@ public class Ratings {
         if(ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] + data < 5){
             ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] += data;
         }
+
     }
 
     public int getNumRows(){
