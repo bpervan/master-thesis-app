@@ -34,30 +34,21 @@ public class Main {
         FileInput fileInput = FileInput.createInstance();
         List<Record> list = fileInput.parseFile("raw_data/dataset7/LogFile_06-06-15_18_26.txt");
 
+
         Ratings ratings = Ratings.fromCsv(RATINGS_FILE_NAME);
         Correlations correlations = new Correlations(ratings);
-        RecommendationAlgorithm algo = new UserUserFilter(ratings, correlations);
-
         List<ItemBeaconLink> itemsBeacons = ItemBeaconLink.fromCsv(BEACONS_FILE_NAME);
 
-        list
+
+        /*list
                 .forEach(r ->
                         System.out.println(
                                 r.getTimestamp().getSeconds() + " "
                                         + r.getRss() + " "
                                         + r.getAccelerometer() + " "
-                                        + r.getMagnetometer()));
+                                        + r.getMagnetometer()));*/
 
-
-
-        RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
-        recordAnalyzer.analyze(list);
-
-
-
-
-
-        /*UserBuilder testUserBuilder = UserBuilder.getInstance()
+        UserBuilder testUserBuilder = UserBuilder.getInstance()
                 .setUserId(89)
                 .setFirstName("Testko")
                 .setLastName("Testic");
@@ -68,14 +59,19 @@ public class Main {
 
         List<Item> itemList = Item.fromCsv(ITEMS_FILE_NAME);
 
+
+
         TheAlgorithm algorithm = new TheAlgorithm(
-                new SpaceFilter(Graph.fromCsv("layout.csv"), itemList),
+                new SpaceFilter(Graph.fromCsv(LAYOUT_FILE_NAME), itemList),
                 new TimeFilter(ratings),
                 new UserUserFilter(ratings, correlations),
                 new ContentFilter(ratings, itemList)
         );
 
-        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);*/
+        //List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
+
+        RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
+        recordAnalyzer.analyze(list, testUser);
 
         logger.info("");
         System.out.println("Over and out!");

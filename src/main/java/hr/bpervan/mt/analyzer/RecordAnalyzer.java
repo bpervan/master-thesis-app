@@ -4,6 +4,7 @@ import hr.bpervan.mt.data.ItemBeaconLink;
 import hr.bpervan.mt.data.Ratings;
 import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.main.Main;
+import hr.bpervan.mt.model.User;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -47,7 +48,7 @@ public class RecordAnalyzer {
      * 4. Izraèunaj trajanje i klasificiraj kao pass by, zastajkivanje ili zaustavljanje.
      * 5. Dodaj reinforcement za usera
      * */
-    public void analyze(List<Record> records){
+    public void analyze(List<Record> records, User user){
         final int maxRss = records.stream().max(Comparator.comparing(record -> record.getRss())).get().getRss();
 
         Record maxRssRecord = records.stream().filter(p -> p.getRss() == maxRss).findFirst().get();
@@ -101,13 +102,13 @@ public class RecordAnalyzer {
 
         if(time >= MIN_FOR_STOPBY){
             /** Zaustavljanje reinforcement*/
-            ratings.reinforce(3712, itemId, 0.5);
+            ratings.reinforce(user.getUserId(), itemId, 0.5);
         } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
             /** Zastajkivanje reinforcement */
-            ratings.reinforce(3712, itemId, 0.3);
+            ratings.reinforce(user.getUserId(), itemId, 0.3);
         } else {
             /** Prolazak */
-            
+
         }
 
         System.out.println(time);
