@@ -23,8 +23,12 @@ public class RecordAnalyzer {
     public static final int SIGNAL_THRESHOLD_INITIAL = 15;
     public static final int SIGNAL_THRESHOLD_WORKING = 5;
 
-    public static final int MIN_FOR_REINFORCEMENT = 3;
-    public static final int MIN_FOR_STOPBY = 5;
+    public static final int MIN_FOR_REINFORCEMENT = 6;
+    public static final int MIN_FOR_STOPBY = 8;
+
+    public static final double ACC_MIN_STOP = 1.5;
+    public static final double ACC_MIN_STOPBY = 3.0;
+    public static final double ACC_MIN_SLOWING = 4.5;
 
     private List<ItemBeaconLink> itemBeaconLinks;
     private Ratings ratings;
@@ -101,13 +105,121 @@ public class RecordAnalyzer {
         if(time >= MIN_FOR_STOPBY){
             /** Zaustavljanje reinforcement*/
             ratings.reinforce(user.getUserId(), itemId, 0.5);
+            //System.out.println("Reinforcement Stopby: " + ratings.getValue(user.getUserId(), itemId) + " ");
         } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
             /** Zastajkivanje reinforcement */
             ratings.reinforce(user.getUserId(), itemId, 0.3);
+            //System.out.println("Reinforcement slow: " + ratings.getValue(user.getUserId(), itemId) + " ");
         } else {
             /** Prolazak */
-
+            //System.out.println("No reinforcement");
         }
-        System.out.println(maxRssRecord.getRss() + " " + time);
+        //System.out.println(maxRssRecord.getRss() + " " + time);
+    }
+
+    public void analyzeByAcc(List<Record> records, User user){
+        /** Faza 1. Skeniraj zapise */
+        for(int i = 0; i < records.size(); ++i){
+            double accX = records.get(i).getAccelerometer().getX();
+            if(accX <= ACC_MIN_SLOWING && accX > ACC_MIN_STOPBY){
+                /** Usporavanje*/
+
+            } else if(accX <= ACC_MIN_STOPBY && accX > ACC_MIN_STOP){
+                /** Zastajkivanje*/
+
+            } else if(accX <= ACC_MIN_STOP){
+                /** Zaustavljanje */
+
+            } else {
+                /** Prolazak*/
+
+            }
+        }
+    }
+
+    public void analyzeByAccSimple(List<Record> records, User user){
+        final double minAcc = records.stream().min(Comparator.comparing(record -> record.getAccelerometer().getX())).get().getAccelerometer().getX();
+
+        Record minAccRecord = records.stream().filter(p -> p.getAccelerometer().getX() == minAcc).findFirst().get();
+
+        int lowerBound = records.indexOf(minAccRecord);
+        int highBound = lowerBound;
+
+        int i = lowerBound - 1;
+        int j = highBound + 1;
+        boolean doneAnything = true;
+        while(j < records.size() && i >= 0){
+            Record workingLowerRecord = records.get(i);
+            Record workingHigherRecord = records.get(j);
+
+            if(minAccRecord.getAccelerometer().getX() - workingLowerRecord.getAccelerometer().getX() < 1.0){
+                lowerBound--;
+                doneAnything = true;
+            } else {
+                doneAnything = false;
+            }
+
+            if(minAccRecord.getAccelerometer().getX() - workingHigherRecord.getAccelerometer().getX() < 1.0){
+                highBound++;
+                doneAnything = true;
+            } else {
+                doneAnything = false;
+            }
+
+            i--;
+            j++;
+
+            if(!doneAnything){
+                break;
+            }
+        }
+
+        List<Record> helperList = records.subList(lowerBound, highBound);
+        Set<Integer> distinctTimes = new HashSet<>();
+        for(int k = lowerBound; k <= highBound; ++k){
+            distinctTimes.add(records.get(k).getTimestamp().getSeconds());
+        }
+        int time = distinctTimes.size();
+        int itemId = itemBeaconLinks
+                .stream()
+                .filter(p -> p.getBeaconId().equals(minAccRecord.getBeaconId()))
+                .findFirst()
+                .get()
+                .getItemId();
+
+        //System.out.println(time + " " + minAccRecord.getAccelerometer().getX());
+
+        if(time >= MIN_FOR_STOPBY){
+            /** Zaustavljanje reinforcement*/
+            ratings.reinforce(user.getUserId(), itemId, 0.5);
+            //System.out.println("Reinforcement Stopby: " + ratings.getValue(user.getUserId(), itemId) + " ");
+        } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
+            /** Zastajkivanje reinforcement */
+            ratings.reinforce(user.getUserId(), itemId, 0.3);
+            //System.out.println("Reinforcement slow: " + ratings.getValue(user.getUserId(), itemId) + " ");
+        } else {
+            /** Prolazak */
+            //System.out.println("No reinforcement");
+        }
+        //System.out.println(maxRssRecord.getRss() + " " + time);
+    }
+
+    private class MovingData{
+        private int duration;
+        private int startingSecond;
+        private MovingType type;
+
+        public MovingData(int duration, int startingSecond, MovingType type){
+            this.duration = duration;
+            this.startingSecond = startingSecond;
+            this.type = type;
+        }
+    }
+
+    private enum MovingType{
+        ZAUSTAVLJANJE,
+        ZASTAJKIVANJE,
+        USPORAVANJE,
+        KRETANJE
     }
 }
