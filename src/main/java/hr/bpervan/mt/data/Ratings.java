@@ -14,6 +14,8 @@ import java.util.Set;
  * Created by Branimir on 16.6.2015..
  */
 public class Ratings {
+    public static final double MAX_RATING = 5.0;
+
     private double[][] ratingTable;
 
     private double[] averageGivenByUser;
@@ -116,10 +118,11 @@ public class Ratings {
 
     public void reinforce(Integer rowKey, Integer columnKey, double data){
         /** Provjeriti ide li preko maksimuma */
-        if(ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] + data < 5){
+        if(ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] + data < MAX_RATING){
             ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] += data;
+        } else {
+            ratingTable[rowIndices.get(rowKey)][columnIndices.get(columnKey)] = MAX_RATING;
         }
-
     }
 
     public int getNumRows(){
