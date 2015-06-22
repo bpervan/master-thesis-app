@@ -9,10 +9,13 @@ public class Coordinate3D {
     private double y;
     private double z;
 
+    private double abs;
+
     public Coordinate3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.abs = Math.sqrt(x * x + y * y + z * z);
     }
 
     public double getX() {
@@ -39,6 +42,14 @@ public class Coordinate3D {
         this.z = z;
     }
 
+    public double getAbs() {
+        return abs;
+    }
+
+    public void setAbs(double abs) {
+        this.abs = abs;
+    }
+
     public static Coordinate3D fromString(String input){
         String[] parts = input.split(";");
         return new Coordinate3D(
@@ -54,6 +65,7 @@ public class Coordinate3D {
                 "x=" + x +
                 ", y=" + y +
                 ", z=" + z +
+                ", abs=" + abs +
                 '}';
     }
 }
