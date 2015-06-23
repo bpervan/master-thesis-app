@@ -72,8 +72,17 @@ public class Main {
 
         RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
         for(String fileName : TestFilesHelper.filesList()){
-            recordAnalyzer.analyze(fileInput.parseFile(fileName), testUser);
+
+            System.out.println("File: " + fileName);
+            List<Record> list = fileInput.parseFile(fileName);
+            list.forEach(i -> System.out.println(i.getRss() + " " + i.getAccelerometer()));
+            recordAnalyzer.analyzeByAccSimple(list, testUser);
+
+            System.out.println();
+            //System.out.print(ratings.getValue(testUser.getUserId(), itemList.get(0).getItemId()));
+            //System.out.println();
         }
+
 
 
         logger.info("");
