@@ -3,6 +3,7 @@ package hr.bpervan.mt.data;
 /**
  * Created by Branimir on 17.6.2015..
  */
+@Link
 public class ItemPredictionLink implements Comparable<ItemPredictionLink>{
     public int itemId;
     public double prediction;

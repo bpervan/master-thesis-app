@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Created by Branimir on 19.6.2015..
  */
-public class ContentFilter implements RecommendationAlgorithm {
+public class ContentFilter implements DataFilter {
 
     private Ratings ratings;
     private List<Item> items;

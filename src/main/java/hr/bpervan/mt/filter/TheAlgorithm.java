@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Branimir on 18.6.2015..
  */
-public class TheAlgorithm implements RecommendationAlgorithm {
+public class TheAlgorithm implements DataFilter {
 
     private Graph layout;
     private Ratings ratings;

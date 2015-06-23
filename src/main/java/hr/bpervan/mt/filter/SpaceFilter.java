@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Branimir on 17.6.2015..
  */
-public class SpaceFilter implements RecommendationAlgorithm {
+public class SpaceFilter implements DataFilter {
 
     private Graph layout;
     private List<Item> itemList;

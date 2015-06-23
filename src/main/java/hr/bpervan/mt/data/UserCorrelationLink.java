@@ -3,6 +3,7 @@ package hr.bpervan.mt.data;
 /**
  * Created by Branimir on 16.6.2015..
  */
+@Link
 public class UserCorrelationLink implements Comparable<UserCorrelationLink>{
     public int userId;
     public double correlation;

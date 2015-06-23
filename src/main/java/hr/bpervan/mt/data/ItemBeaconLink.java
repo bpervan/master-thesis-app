@@ -8,6 +8,7 @@ import java.util.*;
 /**
  * Created by Branimir on 22.6.2015..
  */
+@Link
 public class ItemBeaconLink {
     private String beaconId;
     private int itemId;

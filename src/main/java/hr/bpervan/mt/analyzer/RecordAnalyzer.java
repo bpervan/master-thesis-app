@@ -187,19 +187,19 @@ public class RecordAnalyzer {
                 .get()
                 .getItemId();
 
-        //System.out.println(time + " " + minAccRecord.getAccelerometer().getX());
+        System.out.println(time + " " + minAccRecord.getAccelerometer().getX());
 
         if(time >= MIN_FOR_STOPBY){
             /** Zaustavljanje reinforcement*/
             ratings.reinforce(user.getUserId(), itemId, 0.5);
-            //System.out.println("Reinforcement Stopby: " + ratings.getValue(user.getUserId(), itemId) + " ");
+            System.out.println("Reinforcement Stopby: " + ratings.getValue(user.getUserId(), itemId) + " ");
         } else if(time >= MIN_FOR_REINFORCEMENT && time < MIN_FOR_STOPBY){
             /** Zastajkivanje reinforcement */
             ratings.reinforce(user.getUserId(), itemId, 0.3);
-            //System.out.println("Reinforcement slow: " + ratings.getValue(user.getUserId(), itemId) + " ");
+            System.out.println("Reinforcement slow: " + ratings.getValue(user.getUserId(), itemId) + " ");
         } else {
             /** Prolazak */
-            //System.out.println("No reinforcement");
+            System.out.println("No reinforcement");
         }
         //System.out.println(maxRssRecord.getRss() + " " + time);
     }

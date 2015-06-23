@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Created by Branimir on 17.6.2015..
  */
-public class TimeFilter implements RecommendationAlgorithm {
+public class TimeFilter implements DataFilter {
 
     private Ratings ratings;
 

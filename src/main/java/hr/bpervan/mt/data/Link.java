@@ -1,9 +1,11 @@
 package hr.bpervan.mt.data;
 
+import java.lang.annotation.*;
+
 /**
- * Created by Branimir on 18.6.2015..
+ * Created by Branimir on 23.6.2015..
  */
-public interface Link extends Comparable<Link> {
-    int getItemId();
-    double getPrediction();
+@Retention(RetentionPolicy.CLASS)
+@Target(ElementType.TYPE)
+public @interface Link {
 }

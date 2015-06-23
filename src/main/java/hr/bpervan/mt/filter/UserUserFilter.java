@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Branimir on 17.6.2015..
  */
-public class UserUserFilter implements RecommendationAlgorithm{
+public class UserUserFilter implements DataFilter{
 
 
     private static final int NEIGHBOURHOOD_SIZE = 5;
