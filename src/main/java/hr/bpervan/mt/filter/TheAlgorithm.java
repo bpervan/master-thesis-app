@@ -3,6 +3,9 @@ package hr.bpervan.mt.filter;
 import hr.bpervan.mt.data.Correlations;
 import hr.bpervan.mt.data.ItemPredictionLink;
 import hr.bpervan.mt.data.Ratings;
+import hr.bpervan.mt.filter.settings.FilterMixType;
+import hr.bpervan.mt.filter.space.SpaceFilterImplementation;
+import hr.bpervan.mt.filter.time.TimeFilterImplementation;
 import hr.bpervan.mt.model.Item;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.space.Graph;
@@ -20,19 +23,25 @@ public class TheAlgorithm implements DataFilter {
     private Ratings ratings;
     private Correlations correlations;
 
-    private SpaceFilter spaceFilter;
-    private TimeFilter timeFilter;
+    private SpaceFilterImplementation spaceFilter;
+    private TimeFilterImplementation timeFilter;
     private UserUserFilter userUserFilter;
     private ContentFilter contentFilter;
+    private FilterMixType filterMixType;
+    private double mixRatio;
 
-    public TheAlgorithm(SpaceFilter spaceFilter,
-                        TimeFilter timeFilter,
+    public TheAlgorithm(SpaceFilterImplementation spaceFilter,
+                        TimeFilterImplementation timeFilter,
                         UserUserFilter userUserFilter,
-                        ContentFilter contentFilter){
+                        ContentFilter contentFilter,
+                        FilterMixType filterMixType,
+                        double mixRatio){
         this.spaceFilter = spaceFilter;
         this.timeFilter = timeFilter;
         this.userUserFilter = userUserFilter;
         this.contentFilter = contentFilter;
+        this.filterMixType = filterMixType;
+        this.mixRatio = mixRatio;
     }
 
     @Override
@@ -70,14 +79,51 @@ public class TheAlgorithm implements DataFilter {
                 .stream()
                 .forEach(sr -> timeResult.stream().filter(tr -> tr.itemId == sr.itemId).forEach(str -> str.prediction *= sr.prediction));
 
-        timeResult
-                .stream()
-                .forEach(tr -> userResult.stream().filter(ur -> ur.itemId == tr.itemId).forEach(uts -> uts.prediction *= tr.prediction));
+        switch (filterMixType){
+            case CONTENT_FILTER_ONLY:
+                timeResult
+                        .stream()
+                        .forEach(tr -> contentResult
+                                .stream()
+                                .filter(cr -> cr.itemId == tr.itemId)
+                                .forEach(cts -> cts.prediction *= tr.prediction));
+                break;
 
 
+            case COLLABORATIVE_FILTER_ONLY:
+                timeResult
+                        .stream()
+                        .forEach(tr -> userResult
+                                .stream()
+                                .filter(ur -> ur.itemId == tr.itemId)
+                                .forEach(uts -> uts.prediction *= tr.prediction));
+                break;
+
+
+            case BOTH_FILTERS:
+                timeResult
+                        .stream()
+                        .forEach(tr -> userResult
+                                .stream()
+                                .filter(ur -> ur.itemId == tr.itemId)
+                                .forEach(uts -> uts.prediction *= tr.prediction));
+
+                userResult
+                        .stream()
+                        .forEach(tr -> contentResult
+                                .stream()
+                                .filter(cr -> cr.itemId == tr.itemId)
+                                .forEach(cts -> cts.prediction *= (tr.prediction * (1 - mixRatio))));
+
+                break;
+        }
         helperList = userResult;
 
         helperList.sort(Collections.reverseOrder());
-        return helperList.subList(0, n);
+        if(n > helperList.size()){
+            return helperList;
+        } else {
+            return helperList.subList(0, n);
+        }
     }
 }
