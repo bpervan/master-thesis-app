@@ -2,17 +2,20 @@ package hr.bpervan.mt.main;
 
 import hr.bpervan.mt.analyzer.RecordAnalyzer;
 import hr.bpervan.mt.data.*;
+import hr.bpervan.mt.filter.settings.FilterMixType;
+import hr.bpervan.mt.filter.settings.FilterSettings;
+import hr.bpervan.mt.filter.settings.FilterSettingsBuilder;
+import hr.bpervan.mt.filter.time.TimeFilterImplementation;
 import hr.bpervan.mt.functions.Gaussian;
 import hr.bpervan.mt.io.FileInput;
 import hr.bpervan.mt.io.Record;
 import hr.bpervan.mt.model.Item;
-import hr.bpervan.mt.model.ItemBuilder;
 import hr.bpervan.mt.model.User;
 import hr.bpervan.mt.model.UserBuilder;
 import hr.bpervan.mt.filter.*;
-import hr.bpervan.mt.filter.SpaceFilter;
+import hr.bpervan.mt.filter.space.SpaceFilterImplementation;
 import hr.bpervan.mt.space.*;
-import hr.bpervan.mt.utils.TestFilesHelper;
+import hr.bpervan.mt.analyzer.TestFilesHelper;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -59,16 +62,16 @@ public class Main {
 
         List<Item> itemList = Item.fromCsv(ITEMS_FILE_NAME);
 
-
-
         TheAlgorithm algorithm = new TheAlgorithm(
-                new SpaceFilter(Graph.fromCsv(LAYOUT_FILE_NAME), itemList),
-                new TimeFilter(ratings),
+                new SpaceFilterImplementation(Graph.fromCsv(LAYOUT_FILE_NAME), itemList),
+                new TimeFilterImplementation(ratings),
                 new UserUserFilter(ratings, correlations),
-                new ContentFilter(ratings, itemList)
+                new ContentFilter(ratings, itemList),
+                FilterMixType.BOTH_FILTERS,
+                0.5
         );
 
-        //List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
+        List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
 
         RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
         for(String fileName : TestFilesHelper.filesList()){
@@ -83,7 +86,9 @@ public class Main {
             //System.out.println();
         }
 
+        Graph layout = Graph.fromCsv(LAYOUT_FILE_NAME);
 
+        FilterSettingsBuilder builder = FilterSettingsBuilder.getInstance();
 
         logger.info("");
         System.out.println("Over and out!");
