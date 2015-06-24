@@ -3,7 +3,7 @@ package hr.bpervan.mt.functions;
 /**
  * Created by Branimir on 14.6.2015..
  */
-public class Gaussian implements Function{
+public class Gaussian implements ContinuousFunction{
 
     private double a;
     private double b;
