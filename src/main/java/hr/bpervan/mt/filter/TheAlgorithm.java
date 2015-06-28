@@ -62,7 +62,7 @@ public class TheAlgorithm implements DataFilter {
         List<ItemPredictionLink> userResult = userUserFilter.getTopNForUser(user, n);
         List<ItemPredictionLink> contentResult = contentFilter.getTopNForUser(user, n);
 
-        System.out.println("SpacePrediction");
+        /*System.out.println("SpacePrediction");
         spaceResult.forEach(i -> System.out.println(i));
         System.out.println();
         System.out.println("TimePrediction");
@@ -72,7 +72,7 @@ public class TheAlgorithm implements DataFilter {
         userResult.forEach(i -> System.out.println(i));
         System.out.println();
         System.out.println("ContentPrediction");
-        contentResult.forEach(i -> System.out.println(i));
+        contentResult.forEach(i -> System.out.println(i));*/
 
 
         spaceResult

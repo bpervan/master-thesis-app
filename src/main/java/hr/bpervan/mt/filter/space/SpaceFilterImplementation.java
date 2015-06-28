@@ -8,6 +8,7 @@ import hr.bpervan.mt.space.Dijkstra;
 import hr.bpervan.mt.space.Graph;
 import hr.bpervan.mt.space.Node;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +47,6 @@ public class SpaceFilterImplementation implements SpaceFilter {
 
         Collections.sort(nodeList);
         double maxDistance = nodeList.get(nodeList.size() - 1).getDistance();
-
         for(Node node : nodeList){
             itemList
                     .stream()
