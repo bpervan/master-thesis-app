@@ -51,12 +51,18 @@ public class Main {
                                         + r.getAccelerometer() + " "
                                         + r.getMagnetometer()));*/
 
+        Random r = new Random();
+
         UserBuilder testUserBuilder = UserBuilder.getInstance()
                 .setUserId(89)
                 .setFirstName("Testko")
                 .setLastName("Testic");
         for(Integer i : ratings.getItemSet()){
-            testUserBuilder.addEntryToTimeMap(i, new Gaussian());
+            double randomA = 0.2 + (0.25 - 0.2) * r.nextDouble();
+            double randomB = 2.2 + (2.7 - 2.2) * r.nextDouble();
+            double randomC = 1.8 + (2.2 - 1.8) * r.nextDouble();
+
+            testUserBuilder.addEntryToTimeMap(i, new Gaussian(randomA, randomB, randomC));
         }
         User testUser = testUserBuilder.build();
 
@@ -72,14 +78,25 @@ public class Main {
         );
 
         List<ItemPredictionLink> result = algorithm.getTopNForUser(testUser, 100, 0);
-
+        /*System.out.println("SUM:----------------");
+        result.forEach(i -> System.out.println(i));
+        System.out.println("END SUM:----------------");*/
         RecordAnalyzer recordAnalyzer = new RecordAnalyzer(ratings, itemsBeacons);
         for(String fileName : TestFilesHelper.filesList()){
 
             System.out.println("File: " + fileName);
             List<Record> list = fileInput.parseFile(fileName);
-            list.forEach(i -> System.out.println(i.getRss() + " " + i.getAccelerometer()));
-            recordAnalyzer.analyzeByAccSimple(list, testUser);
+            //list.forEach(i -> System.out.println(i.getRss() + " " + i.getAccelerometer()));
+            list.forEach(i -> System.out.print(i.getAccelerometer().getX() + " "));
+            System.out.println();
+            list.forEach(i -> System.out.print(i.getAccelerometer().getY() + " "));
+            System.out.println();
+            list.forEach(i -> System.out.print(i.getAccelerometer().getZ() + " "));
+            System.out.println();
+            list.forEach(i -> System.out.print(i.getAccelerometer().getAbs() + " "));
+            System.out.println();
+            System.out.println(list.size());
+            recordAnalyzer.naiveAnalytics(list, testUser);
 
             System.out.println();
             //System.out.print(ratings.getValue(testUser.getUserId(), itemList.get(0).getItemId()));
